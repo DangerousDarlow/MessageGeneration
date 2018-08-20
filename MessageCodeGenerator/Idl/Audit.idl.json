@@ -1,0 +1,33 @@
+﻿{
+  "namespace": "Audit",
+
+  "messages": [
+    {
+      "name": "HttpResponse",
+      "properties": [
+        {
+          "name": "Timestamp",
+          "type": "DateTime"
+        },
+        {
+          "name": "Response",
+          "type": "Http.Common.HttpResponse" 
+        }
+      ] 
+    },
+    {
+      "name": "BasicEvent",
+      "properties": [
+        {
+          "name": "Value1",
+          "type": "String"
+        },
+        {
+          "name": "Value2",
+          "type": "Int"
+        }
+      ]
+    }
+  ]
+  
+}

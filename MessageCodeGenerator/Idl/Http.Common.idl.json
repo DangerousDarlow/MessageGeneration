@@ -1,0 +1,32 @@
+﻿{
+  "namespace": "Http.Common",
+
+  "enumerations": [
+    {
+      "name": "HttpStatus",
+      "enumerators": [
+        {
+          "name": "OK",
+          "value": "200"
+        },
+        {
+          "name": "BadRequest",
+          "value": "400"
+        }
+      ]
+    }
+  ],
+
+  "messages": [
+    {
+      "name": "HttpResponse",
+      "properties": [
+        {
+          "name": "Status",
+          "type": "HttpStatus" 
+        }
+      ] 
+    }
+  ]
+  
+}
