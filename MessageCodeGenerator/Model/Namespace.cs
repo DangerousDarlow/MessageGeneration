@@ -6,6 +6,8 @@ namespace MessageCodeGenerator.Model
     {
         public string Name { get; set; }
 
+        public IEnumerable<Enumeration> Enumerations { get; set; }
+
         public IEnumerable<Message> Messages { get; set; }
     }
 }
