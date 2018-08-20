@@ -16,17 +16,29 @@ namespace MessageCodeGenerator
         private Func<object, string> MessageTemplate { get; } =
             Handlebars.Compile(File.ReadAllText("CsTemplates/Message.template"));
 
+        private Func<object, string> EnumerationTemplate { get; } =
+            Handlebars.Compile(File.ReadAllText("CsTemplates/Enumeration.template"));
+
         public void GenerateCode(IEnumerable<Namespace> model) =>
             model?.ToList().ForEach(GenerateNamespace);
 
         private void GenerateNamespace(Namespace nspace)
         {
+            Directory.CreateDirectory(nspace.Name);
             nspace.Messages?.ToList().ForEach(GenerateMessage);
+            nspace.Enumerations?.ToList().ForEach(GenerateEnumeration);
         }
 
         private void GenerateMessage(Message message)
         {
-            File.WriteAllText($"{message.Name}.cs", MessageTemplate(new CsMessage(message)));
+            var path = Path.Combine(message.Namespace, message.Name);
+            File.WriteAllText($"{path}.cs", MessageTemplate(new CsMessage(message)));
+        }
+
+        private void GenerateEnumeration(Enumeration enumeration)
+        {
+            var path = Path.Combine(enumeration.Namespace, enumeration.Name);
+            File.WriteAllText($"{path}.cs", EnumerationTemplate(new CsEnumeration(enumeration)));
         }
     }
 
@@ -35,7 +47,8 @@ namespace MessageCodeGenerator
         public CsMessage(Message message)
         {
             Name = message.Name;
-            Properties = message.Properties?.Select(property => new CsProperty(property));
+            Namespace = message.Namespace;
+            Properties = message.Properties?.Select(property => new CsProperty(property, Namespace));
 
             var json = JsonConvert.SerializeObject(message);
             var bytes = MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(json));
@@ -44,6 +57,8 @@ namespace MessageCodeGenerator
 
         public string Name { get; }
 
+        public string Namespace { get; }
+
         public IEnumerable<CsProperty> Properties { get; }
 
         public string Schema { get; }
@@ -51,22 +66,22 @@ namespace MessageCodeGenerator
 
     public class CsProperty
     {
-        public CsProperty(Property property)
+        public CsProperty(Property property, string nspace)
         {
             Name = property.Name;
-            Type = PropertyTypeToString(property.Type);
+            Type = PropertyTypeToString(property.Type, nspace);
         }
 
         public string Name { get; }
 
         public string Type { get; }
 
-        public static string PropertyTypeToString(PropertyType propertyType)
+        public static string PropertyTypeToString(PropertyType propertyType, string nspace)
         {
             switch (propertyType.Type)
             {
                 case PropertyTypeEnum.Definition:
-                    return propertyType.Definition.Name;
+                    return DefinitionName(propertyType.Definition, nspace);
 
                 case PropertyTypeEnum.Integer:
                     return "int";
@@ -81,5 +96,38 @@ namespace MessageCodeGenerator
                     throw new ArgumentOutOfRangeException();
             }
         }
+
+        private static string DefinitionName(IDefinition definition, string nspace) =>
+            definition.Namespace == nspace
+            ? definition.Name
+            : $"{definition.Namespace}.{definition.Name}";
+    }
+
+    public class CsEnumeration
+    {
+        public CsEnumeration(Enumeration enumeration)
+        {
+            Name = enumeration.Name;
+            Namespace = enumeration.Namespace;
+            Enumerators = enumeration.Enumerators.Select(enumerator => new CsEnumerator(enumerator));
+        }
+
+        public string Name { get; }
+
+        public string Namespace { get; }
+
+        public IEnumerable<CsEnumerator> Enumerators { get; }
+    }
+
+    public class CsEnumerator
+    {
+        public CsEnumerator(Enumerator enumerator)
+        {
+            TemplateString = enumerator.Value.HasValue
+                ? $"{enumerator.Name} = {enumerator.Value.Value}"
+                : enumerator.Name;
+        }
+
+        public string TemplateString { get; }
     }
 }

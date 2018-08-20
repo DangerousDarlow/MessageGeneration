@@ -1,0 +1,9 @@
+﻿namespace {{Namespace}}
+{
+    public enum {{Name}}
+    {
+      {{#each Enumerators}}
+      {{TemplateString}},
+      {{/each}}
+    }
+}

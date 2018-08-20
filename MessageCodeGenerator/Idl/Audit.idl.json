@@ -12,6 +12,10 @@
         {
           "name": "Response",
           "type": "Http.Common.HttpResponse" 
+        },
+        {
+          "name": "Status",
+          "type": "Http.Common.HttpStatus" 
         }
       ] 
     },

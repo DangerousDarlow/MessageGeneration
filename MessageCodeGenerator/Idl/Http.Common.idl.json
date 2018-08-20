@@ -12,6 +12,9 @@
         {
           "name": "BadRequest",
           "value": "400"
+        },
+        {
+          "name": "Blah"
         }
       ]
     }

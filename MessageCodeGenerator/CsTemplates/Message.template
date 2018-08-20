@@ -1,11 +1,12 @@
-﻿namespace ToDo
+﻿namespace {{Namespace}}
 {
     public class {{Name}}
     {
-		public static readonly string Schema = "{{Schema}}";
+      public static readonly string Schema = "{{Schema}}";
 
-		{{#each Properties}}
-		public {{Type}} {{Name}} { get; set; }
-		{{/each}}
+      {{#each Properties}}
+      public {{Type}} {{Name}} { get; set; }
+      
+      {{/each}}
     }
 }

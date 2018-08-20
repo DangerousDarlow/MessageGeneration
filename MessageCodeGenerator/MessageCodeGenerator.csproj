@@ -13,6 +13,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="CsTemplates\Enumeration.template">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="CsTemplates\Message.template">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
