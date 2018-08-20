@@ -4,7 +4,8 @@
     {
         Definition,
         Integer,
-        String
+        String,
+        DateTime
     }
 
     public class PropertyType
@@ -22,5 +23,9 @@
         }
 
         public PropertyTypeEnum Type { get; set; }
+
+        public override string ToString() => Type == PropertyTypeEnum.Definition
+            ? $"{Definition?.Namespace}.{Definition?.Name}"
+            : Type.ToString();
     }
 }

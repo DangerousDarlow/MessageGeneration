@@ -16,7 +16,7 @@
       ] 
     },
     {
-      "name": "BasicEvent",
+      "name": "EncapsulatedHttpResponse",
       "properties": [
         {
           "name": "Value1",
@@ -24,7 +24,11 @@
         },
         {
           "name": "Value2",
-          "type": "Int"
+          "type": "Integer"
+        },
+        {
+          "name": "Value3",
+          "type": "HttpResponse"
         }
       ]
     }

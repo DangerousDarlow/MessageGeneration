@@ -1,4 +1,7 @@
-﻿using Ninject;
+﻿using System.IO;
+using System.Linq;
+using Newtonsoft.Json.Linq;
+using Ninject;
 using Ninject.Extensions.Conventions;
 
 namespace MessageCodeGenerator
@@ -19,7 +22,12 @@ namespace MessageCodeGenerator
                 .SelectAllClasses()
                 .BindAllInterfaces());
 
+            // A real code generator would make the source of definitions dynamic
+            var idlFiles = Directory.GetFiles("Idl", "*.idl.json").ToList();
+            var idl = idlFiles.Select(path => JObject.Parse(File.ReadAllText(path)));
+
             var generator = kernel.Get<ICodeGenerator>();
+            generator.GenerateCode(idl);
         }
     }
 }

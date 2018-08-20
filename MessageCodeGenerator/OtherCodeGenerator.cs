@@ -3,9 +3,10 @@ using MessageCodeGenerator.Model;
 
 namespace MessageCodeGenerator
 {
+    // ReSharper disable once UnusedMember.Global
     public class OtherCodeGenerator : ILanguageCodeGenerator
     {
-        public void GenerateCode(IEnumerable<Namespace> namespaces)
+        public void GenerateCode(IEnumerable<Namespace> model)
         {
             // Do something
         }

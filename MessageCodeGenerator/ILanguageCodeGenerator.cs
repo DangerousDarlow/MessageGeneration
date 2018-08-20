@@ -5,6 +5,6 @@ namespace MessageCodeGenerator
 {
     public interface ILanguageCodeGenerator
     {
-        void GenerateCode(IEnumerable<Namespace> namespaces);
+        void GenerateCode(IEnumerable<Namespace> model);
     }
 }

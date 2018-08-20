@@ -10,13 +10,14 @@ using Newtonsoft.Json;
 
 namespace MessageCodeGenerator
 {
+    // ReSharper disable once UnusedMember.Global
     public class CsCodeGenerator : ILanguageCodeGenerator
     {
         private Func<object, string> MessageTemplate { get; } =
             Handlebars.Compile(File.ReadAllText("CsTemplates/Message.template"));
 
-        public void GenerateCode(IEnumerable<Namespace> namespaces) =>
-            namespaces?.ToList().ForEach(GenerateNamespace);
+        public void GenerateCode(IEnumerable<Namespace> model) =>
+            model?.ToList().ForEach(GenerateNamespace);
 
         private void GenerateNamespace(Namespace nspace)
         {
@@ -72,6 +73,9 @@ namespace MessageCodeGenerator
 
                 case PropertyTypeEnum.String:
                     return "string";
+
+                case PropertyTypeEnum.DateTime:
+                    return "DateTime";
 
                 default:
                     throw new ArgumentOutOfRangeException();
