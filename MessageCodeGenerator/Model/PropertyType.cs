@@ -2,22 +2,22 @@
 {
     public enum PropertyTypeEnum
     {
-        Message,
+        Definition,
         Integer,
         String
     }
 
     public class PropertyType
     {
-        private Message _message;
+        private IDefinition _definition;
 
-        public Message Message
+        public IDefinition Definition
         {
-            get => _message;
+            get => _definition;
             set
             {
-                Type = PropertyTypeEnum.Message;
-                _message = value;
+                Type = PropertyTypeEnum.Definition;
+                _definition = value;
             }
         }
 

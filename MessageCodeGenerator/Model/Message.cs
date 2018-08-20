@@ -2,7 +2,7 @@
 
 namespace MessageCodeGenerator.Model
 {
-    public class Message
+    public class Message : IDefinition
     {
         public string Name { get; set; }
 

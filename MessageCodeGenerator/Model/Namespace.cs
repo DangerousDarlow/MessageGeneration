@@ -7,7 +7,5 @@ namespace MessageCodeGenerator.Model
         public string Name { get; set; }
 
         public IEnumerable<Message> Messages { get; set; }
-
-        public IEnumerable<Namespace> Namespaces { get; set; }
     }
 }

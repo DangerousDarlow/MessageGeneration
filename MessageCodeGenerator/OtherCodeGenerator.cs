@@ -5,7 +5,7 @@ namespace MessageCodeGenerator
 {
     public class OtherCodeGenerator : ILanguageCodeGenerator
     {
-        public void GenerateCode(IEnumerable<Definitions> definitions)
+        public void GenerateCode(IEnumerable<Namespace> namespaces)
         {
             // Do something
         }

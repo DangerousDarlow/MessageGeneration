@@ -15,16 +15,12 @@ namespace MessageCodeGenerator
         private Func<object, string> MessageTemplate { get; } =
             Handlebars.Compile(File.ReadAllText("CsTemplates/Message.template"));
 
-        public void GenerateCode(IEnumerable<Definitions> definitions) =>
-            definitions?.ToList().ForEach(GenerateDefinitions);
-
-        private void GenerateDefinitions(Definitions definitions) =>
-            definitions.Namespaces?.ToList().ForEach(GenerateNamespace);
+        public void GenerateCode(IEnumerable<Namespace> namespaces) =>
+            namespaces?.ToList().ForEach(GenerateNamespace);
 
         private void GenerateNamespace(Namespace nspace)
         {
             nspace.Messages?.ToList().ForEach(GenerateMessage);
-            nspace.Namespaces?.ToList().ForEach(GenerateNamespace);
         }
 
         private void GenerateMessage(Message message)
@@ -68,8 +64,8 @@ namespace MessageCodeGenerator
         {
             switch (propertyType.Type)
             {
-                case PropertyTypeEnum.Message:
-                    return propertyType.Message.Name;
+                case PropertyTypeEnum.Definition:
+                    return propertyType.Definition.Name;
 
                 case PropertyTypeEnum.Integer:
                     return "int";

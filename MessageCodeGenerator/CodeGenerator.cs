@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using MessageCodeGenerator.Model;
 
 namespace MessageCodeGenerator
 {
     public interface ICodeGenerator
     {
-        void GenerateCode(IEnumerable<IDefinitionsSource> definitionsSources);
+        void GenerateCode(IEnumerable<Namespace> namespaces);
     }
 
     public class CodeGenerator : ICodeGenerator
@@ -17,10 +18,7 @@ namespace MessageCodeGenerator
 
         private IEnumerable<ILanguageCodeGenerator> LanguageCodeGenerators { get; }
 
-        public void GenerateCode(IEnumerable<IDefinitionsSource> definitionsSources)
-        {
-            var definitions = definitionsSources.Select(x => x.Definitions);
-            LanguageCodeGenerators.ToList().ForEach(x => x.GenerateCode(definitions));
-        }
+        public void GenerateCode(IEnumerable<Namespace> namespaces) =>
+            LanguageCodeGenerators.ToList().ForEach(x => x.GenerateCode(namespaces));
     }
 }
