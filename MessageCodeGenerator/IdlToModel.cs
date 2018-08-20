@@ -69,7 +69,12 @@ namespace MessageCodeGenerator
             return new Namespace
             {
                 Name = nspace,
-                Messages = namespaceIdl["messages"]?.Select(token => TransformMessage(token, nspace)).ToList()
+
+                Messages = namespaceIdl["messages"]?
+                    .Select(token => TransformMessage(token, nspace)).ToList(),
+
+                Enumerations = namespaceIdl["enumerations"]?
+                    .Select(token => TransformEnumeration(token, nspace)).ToList()
             };
         }
 
@@ -126,5 +131,33 @@ namespace MessageCodeGenerator
                 Definition = DefinitionDictionary.Get(idl, nspace)
             };
         }
+
+        private Enumeration TransformEnumeration(JToken enumerationIdl, string nspace)
+        {
+            try
+            {
+                var definition =
+                    DefinitionDictionary.Get(enumerationIdl["name"]?.Value<string>(), nspace) as Enumeration;
+                if (definition == null)
+                    throw new NullReferenceException(enumerationIdl["name"]?.Value<string>());
+
+                definition.Enumerators = enumerationIdl["enumerators"]?.Select(
+                    TransformEnumerator).ToList();
+
+                return definition;
+            }
+            catch (Exception e)
+            {
+                throw new AggregateException(
+                    $"Failed to transform message {nspace}.{enumerationIdl["name"]?.Value<string>()}",
+                    e);
+            }
+        }
+
+        private static Enumerator TransformEnumerator(JToken enumeratorIdl) => new Enumerator
+        {
+            Name = enumeratorIdl["name"]?.Value<string>(),
+            Value = enumeratorIdl["value"]?.Value<int>()
+        };
     }
 }
